@@ -7,6 +7,6 @@
 		<owner>
 			<email>mode89@mail.ru</email>
 		</owner>
-		<source type="git">https://github.com/mode89/gentoo-overlays.git</source>
+		<source type="git">https://github.com/mode89/gentoo-overlay.git</source>
 	</repo>
 </repositories>
