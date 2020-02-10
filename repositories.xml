@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<repositories version="1.0">
+	<repo priority="50" quality="experimental" status="unofficial">
+		<name>mode</name>
+		<description>Miscelanious packages.</description>
+		<homepage>https://github.com/mode89/gentoo-overlay</homepage>
+		<owner>
+			<email>mode89@mail.ru</email>
+		</owner>
+		<source type="git">https://github.com/mode89/gentoo-overlays.git</source>
+	</repo>
+</repositories>
