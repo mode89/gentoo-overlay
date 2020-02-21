@@ -9,6 +9,7 @@ MY_P="${PN}-v${PV}"
 DESCRIPTION="A Free Toolkit for developing mapping applications"
 HOMEPAGE="http://www.mapnik.org/"
 SRC_URI="http://mapnik.s3.amazonaws.com/dist/v${PV}/${MY_P}.tar.bz2"
+S="${WORKDIR}/mapnik-v${PV}"
 
 LICENSE="LGPL-3"
 SLOT="0"
