@@ -1,0 +1,4 @@
+lapack/reference/liblapack.so /usr/@LIBDIR@/liblapack.so
+lapack/reference/liblapacke.so /usr/@LIBDIR@/liblapacke.so
+../lapack/reference/lapack.pc /usr/@LIBDIR@/pkgconfig/lapack.pc
+../lapack/reference/lapacke.pc /usr/@LIBDIR@/pkgconfig/lapacke.pc
