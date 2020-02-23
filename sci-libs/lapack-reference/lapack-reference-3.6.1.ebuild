@@ -41,11 +41,13 @@ src_prepare() {
 
 src_configure() {
 	local mycmakeargs=(
-		-DCBLAS=ON
+		-DCBLAS=OFF
 		-DBUILD_SHARED_LIBS=ON
 		-DBUILD_STATIC_LIBS=OFF
 		-DBUILD_TESTING=OFF
 		-DLAPACKE=ON
+		-DLAPACKE_WITH_TMG=OFF
+		-DUSE_OPTIMIZED_BLAS=ON
 	)
 
 	cmake-utils_src_configure
