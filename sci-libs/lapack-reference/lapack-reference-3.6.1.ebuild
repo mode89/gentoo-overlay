@@ -15,8 +15,12 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND=""
-RDEPEND="${DEPEND}"
+RDEPEND="
+	app-eselect/eselect-lapack
+	virtual/blas"
+DEPEND="
+	${RDEPEND}
+	virtual/pkgconfig"
 
 S="${WORKDIR}/lapack-3.6.1"
 
