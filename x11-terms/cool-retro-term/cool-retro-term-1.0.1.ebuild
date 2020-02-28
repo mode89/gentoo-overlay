@@ -26,10 +26,7 @@ DEPEND="
 RDEPEND="${DEPEND}"
 
 src_configure() {
-	local myeqmakeargs=(
-		PREFIX="${EPREFIX}/usr"
-	)
-	eqmake5 ${myeqmakeargs[@]}
+	eqmake5
 }
 
 src_install() {
