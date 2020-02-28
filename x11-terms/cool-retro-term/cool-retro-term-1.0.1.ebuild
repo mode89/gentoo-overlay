@@ -10,6 +10,7 @@ DESCRIPTION="A good looking terminal emulator which mimics the old cathode displ
 HOMEPAGE="https://github.com/Swordfish90/cool-retro-term"
 
 EGIT_REPO_URI="git://github.com/Swordfish90/${PN}.git"
+EGIT_COMMIT="1.0.1"
 
 LICENSE="GPL-3"
 SLOT="0"
