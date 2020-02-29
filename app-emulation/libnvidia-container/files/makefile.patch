@@ -1,0 +1,81 @@
+diff --git a/Makefile b/Makefile
+index 0af8123..2f4d842 100644
+--- a/Makefile
++++ b/Makefile
+@@ -13,10 +13,10 @@ WITH_SECCOMP ?= yes
+ 
+ ##### Global definitions #####
+ 
+-export prefix      = /usr/local
++export prefix      = /usr
+ export exec_prefix = $(prefix)
+ export bindir      = $(exec_prefix)/bin
+-export libdir      = $(exec_prefix)/lib
++export libdir      = $(exec_prefix)/$(LIBDIR)
+ export docdir      = $(prefix)/share/doc
+ export libdbgdir   = $(prefix)/lib/debug$(libdir)
+ export includedir  = $(prefix)/include
+@@ -127,11 +127,8 @@ LIB_LDLIBS_SHARED  += -lelf
+ else
+ LIB_LDLIBS_STATIC  += -l:libelf.a
+ endif
+-ifeq ($(WITH_TIRPC), yes)
+-LIB_CPPFLAGS       += -isystem $(DEPS_DIR)$(includedir)/tirpc -DWITH_TIRPC
+-LIB_LDLIBS_STATIC  += -l:libtirpc.a
+-LIB_LDLIBS_SHARED  += -lpthread
+-endif
++LIB_CPPFLAGS       += -isystem /usr/include/tirpc -DWITH_TIRPC
++LIB_LDLIBS_SHARED  += -lpthread -ltirpc
+ ifeq ($(WITH_SECCOMP), yes)
+ LIB_CPPFLAGS       += -DWITH_SECCOMP
+ LIB_LDLIBS_SHARED  += -lseccomp
+@@ -145,6 +142,7 @@ LIB_LDLIBS         = $(LIB_LDLIBS_STATIC) $(LIB_LDLIBS_SHARED)
+ 
+ # Binary flags (recursively expanded to handle target-specific flags)
+ BIN_CPPFLAGS       = -include $(BUILD_DEFS) $(CPPFLAGS)
++BIN_CPPFLAGS       += -isystem /usr/include/tirpc
+ BIN_CFLAGS         = -I$(SRCS_DIR) -fPIE -flto $(CFLAGS)
+ BIN_LDFLAGS        = -L. -pie $(LDFLAGS) -Wl,-rpath='$$ORIGIN/../$$LIB'
+ BIN_LDLIBS         = -l:$(LIB_SHARED) -lcap $(LDLIBS)
+@@ -186,7 +184,6 @@ $(LIB_SHARED): $(LIB_OBJS)
+ 	$(OBJCPY) --only-keep-debug $@ $(LIB_SONAME)
+ 	$(OBJCPY) --add-gnu-debuglink=$(LIB_SONAME) $@
+ 	$(MV) $(LIB_SONAME) $(DEBUG_DIR)
+-	$(STRIP) --strip-unneeded -R .comment $@
+ 
+ $(LIB_STATIC_OBJ): $(LIB_OBJS)
+ 	# FIXME Handle user-defined LDFLAGS and LDLIBS
+@@ -196,12 +193,11 @@ $(LIB_STATIC_OBJ): $(LIB_OBJS)
+ 
+ $(BIN_NAME): $(BIN_OBJS)
+ 	$(CC) $(BIN_CFLAGS) $(BIN_CPPFLAGS) $(BIN_LDFLAGS) $(OUTPUT_OPTION) $^ $(BIN_SCRIPT) $(BIN_LDLIBS)
+-	$(STRIP) --strip-unneeded -R .comment $@
+ 
+ ##### Public rules #####
+ 
+ all: CPPFLAGS += -DNDEBUG
+-all: shared static tools
++all: shared tools
+ 
+ # Run with ASAN_OPTIONS="protect_shadow_gap=0" to avoid CUDA OOM errors
+ debug: CFLAGS += -pedantic -fsanitize=undefined -fno-omit-frame-pointer -fno-common -fsanitize=address
+@@ -226,17 +222,14 @@ ifeq ($(WITH_TIRPC), yes)
+ 	$(MAKE) -f $(MAKE_DIR)/libtirpc.mk install
+ endif
+ 
+-install: all
+-	$(INSTALL) -d -m 755 $(addprefix $(DESTDIR),$(includedir) $(bindir) $(libdir) $(docdir) $(libdbgdir) $(pkgconfdir))
++install:
++	$(INSTALL) -d -m 755 $(addprefix $(DESTDIR),$(includedir) $(bindir) $(libdir) $(docdir) $(pkgconfdir))
+ 	# Install header files
+ 	$(INSTALL) -m 644 $(LIB_INCS) $(DESTDIR)$(includedir)
+ 	# Install library files
+-	$(INSTALL) -m 644 $(LIB_STATIC) $(DESTDIR)$(libdir)
+ 	$(INSTALL) -m 755 $(LIB_SHARED) $(DESTDIR)$(libdir)
+ 	$(LN) -sf $(LIB_SONAME) $(DESTDIR)$(libdir)/$(LIB_SYMLINK)
+ 	$(LDCONFIG) -n $(DESTDIR)$(libdir)
+-	# Install debugging symbols
+-	$(INSTALL) -m 644 $(DEBUG_DIR)/$(LIB_SONAME) $(DESTDIR)$(libdbgdir)
+ 	# Install configuration files
+ 	$(MAKE_DIR)/$(LIB_PKGCFG).in "$(strip $(VERSION))" "$(strip $(LIB_LDLIBS_SHARED))" > $(DESTDIR)$(pkgconfdir)/$(LIB_PKGCFG)
+ 	# Install binary files
