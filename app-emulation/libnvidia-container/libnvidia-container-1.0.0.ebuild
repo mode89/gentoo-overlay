@@ -7,7 +7,7 @@ inherit git-r3
 
 DESCRIPTION="NVIDIA container runtime library"
 HOMEPAGE="https://github.com/nvidia/libnvidia-container"
-SRC_URI="https://github.com/nvidia/libnvidia-container"
+SRC_URI="https://github.com/nvidia/libnvidia-container.git"
 
 LICENSE="BSD-3"
 SLOT="0"
