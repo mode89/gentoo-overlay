@@ -15,7 +15,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND=" \
-	dev-libs/libelf \
+	dev-libs/elfutils \
 	net-libs/libtirpc \
 	net-libs/rpcsvc-proto \
 	sys-libs/libseccomp \
