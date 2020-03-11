@@ -73,5 +73,5 @@ src_install() {
 	dobin $GOPATH/bin/nvidia-container-runtime-hook
 	newbin $RUNC_DIR/runc nvidia-container-runtime
 	insinto /etc/nvidia-container-runtime
-	newins ${S}/hook/config.toml.ubuntu config.toml
+	doins ${FILESDIR}/config.toml
 }
