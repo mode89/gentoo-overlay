@@ -16,7 +16,9 @@ IUSE=""
 RESTRICT="network-sandbox"
 
 DEPEND=""
-RDEPEND="${DEPEND}"
+RDEPEND="${DEPEND} \
+	app-emulation/libnvidia-container \
+"
 BDEPEND=" \
 	dev-lang/go \
 "
